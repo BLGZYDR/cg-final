@@ -351,30 +351,29 @@ void WeatherSystem::renderSnowAccumulation() {
 
     // 绘制森林地面的积雪
     glColor4f(0.95f, 0.95f, 1.0f, 0.9f);
-    cons1(0, 10, 0, 800, 3, 800);
-    build();
+    GenerateCuboid(0, 10, 0, 800, 3, 800);
+    RenderCuboid();
 
     // 绘制房屋屋顶的积雪（三角形屋顶）
     glColor4f(0.98f, 0.98f, 1.0f, 0.95f);
     // 屋顶左侧
-    cons3(400, 185, 400, 180, 310, 95, 310, 90, 95, 180);
-    build3();
+    GenerateParallelogramPrism(400, 185, 400, 180, 310, 95, 310, 90, 95, 180);
+    RenderParallelogramPrism();
     // 屋顶右侧
-    cons3(400, 185, 400, 180, 490, 95, 490, 90, 95, 180);
-    build3();
+    GenerateParallelogramPrism(400, 185, 400, 180, 490, 95, 490, 90, 95, 180);
+    RenderParallelogramPrism();
 
     // 绘制烟囱顶部的积雪
     glColor4f(1.0f, 1.0f, 1.0f, 0.9f);
     // 烟囱顶部
-    cons1(355, 145, 165, -30, 5, 30);
-    build();
-    //绘制棚子上的积雪
-    cons3(400, 95, 400, 100, 370, 65, 370, 70, 270, 70);
-    build3();
-    cons3(400, 95, 400, 100, 430, 65, 430, 70, 270, 70);
-    build3();
-
+    GenerateCuboid(355, 145, 165, -30, 5, 30);
+    RenderCuboid();
     
+    //绘制棚子上的积雪
+    GenerateParallelogramPrism(400, 95, 400, 100, 370, 65, 370, 70, 270, 70);
+    RenderParallelogramPrism();
+    GenerateParallelogramPrism(400, 95, 400, 100, 430, 65, 430, 70, 270, 70);
+    RenderParallelogramPrism();
 
     // 恢复状态
     glDisable(GL_BLEND);

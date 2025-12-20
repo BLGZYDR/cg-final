@@ -2,7 +2,6 @@
 #include "headers.h"
 #include "geometry.h"
 #include "texture.h"
-#include <iostream>
 
 void drawHouse() {
     // 绘制土地地基
