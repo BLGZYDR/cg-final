@@ -1,15 +1,11 @@
 #include "weather.h"
-#include"geometry.h"
-#include <cmath>
-#include <cstdlib>
-#include <ctime>
-#include <iostream>
+#include "geometry.h"
 
 // 全局天气系统实例
 WeatherSystem weatherSystem;
 
 // 构造函数
-WeatherSystem::WeatherSystem() : isRaining(false), isSnowing(false), snowAccumulation(0.0f) {
+WeatherSystem::WeatherSystem() : currentWeather(WEATHER_SUNNY), snowAccumulation(0.0f) {
     srand(static_cast<unsigned>(time(0)));
 }
 
@@ -21,8 +17,7 @@ WeatherSystem::~WeatherSystem() {
 // 初始化系统
 void WeatherSystem::init(int maxParticles) {
     particles.reserve(maxParticles);
-    isRaining = false;
-    isSnowing = false;
+    currentWeather = WEATHER_SUNNY;
     snowAccumulation = 0.0f;
 }
 
@@ -107,7 +102,7 @@ void WeatherSystem::createSplash(float x, float y, float z) {
 // 更新粒子系统
 void WeatherSystem::update(float deltaTime) {
     // 更新积雪厚度
-    if (isSnowing) {
+    if (currentWeather == WEATHER_SNOWING) {
         // 缓慢增加积雪厚度，最大到10个单位
         snowAccumulation += deltaTime * 0.5f;
         if (snowAccumulation > 10.0f) snowAccumulation = 10.0f;
@@ -119,7 +114,7 @@ void WeatherSystem::update(float deltaTime) {
     }
 
     // 如果正在下雨，创建新的雨滴
-    if (isRaining) {
+    if (currentWeather == WEATHER_RAINING) {
         static float rainTimer = 0.0f;
         rainTimer += deltaTime;
 
@@ -132,7 +127,7 @@ void WeatherSystem::update(float deltaTime) {
     }
 
     // 如果正在下雪，创建新的雪花
-    if (isSnowing) {
+    if (currentWeather == WEATHER_SNOWING) {
         static float snowTimer = 0.0f;
         snowTimer += deltaTime;
 
@@ -202,7 +197,7 @@ void WeatherSystem::update(float deltaTime) {
 
 // 绘制粒子
 void WeatherSystem::renderRainAccumulation() {
-    if ((!isRaining && !isSnowing) && particles.empty()) {
+    if ((currentWeather == WEATHER_SUNNY) && particles.empty()) {
         return;
     }
 
@@ -216,7 +211,9 @@ void WeatherSystem::renderRainAccumulation() {
     glDepthMask(GL_FALSE);
 
     // 绘制雨滴
-    if (isRaining || (!isSnowing && particles.size() > 0)) {
+    if (currentWeather == WEATHER_RAINING
+         || (!currentWeather == WEATHER_SNOWING && particles.size() > 0)) 
+    {
         glLineWidth(1.0f);
         glBegin(GL_LINES);
         for (const auto& p : particles) {
@@ -259,7 +256,9 @@ void WeatherSystem::renderRainAccumulation() {
     glEnd();
 
     // 绘制雪花
-    if (isSnowing || (!isRaining && particles.size() > 0)) {
+    if (currentWeather == WEATHER_SNOWING 
+        || (!currentWeather == WEATHER_RAINING && particles.size() > 0)) 
+    {
         glPointSize(4.0f);  // 雪花使用更大的点
         glBegin(GL_POINTS);
         for (const auto& p : particles) {
@@ -384,27 +383,38 @@ void WeatherSystem::renderSnowAccumulation() {
     glPopMatrix();
 }
 
-// 切换下雨状态
-void WeatherSystem::toggleRain() {
-    isRaining = !isRaining;
-    if (isRaining) {
-        isSnowing = false;  // 下雨时停止下雪
-        clearSnow();        // 清除积雪
+// 设置天气状态
+void WeatherSystem::setWeather(WeatherState state) {
+    // 如果切换天气状态，清理之前的粒子
+    if (state != currentWeather) {
+        if (currentWeather == WEATHER_SNOWING && state != WEATHER_SNOWING) {
+            clearSnow(); // 从下雪切换到其他天气时清除积雪
+        }
+        if (currentWeather == WEATHER_RAINING && state == WEATHER_SNOWING) {
+            clear(); // 从下雨切换到下雪，清除所有粒子
+        }
+        
+        currentWeather = state;
+        
+        std::cout << "Weather changed to: ";
+        switch (currentWeather) {
+            case WEATHER_SUNNY:
+                std::cout << "SUNNY";
+                break;
+            case WEATHER_RAINING:
+                std::cout << "RAINING";
+                break;
+            case WEATHER_SNOWING:
+                std::cout << "SNOWING";
+                break;
+        }
+        std::cout << std::endl;
     }
-    std::cout << "Rain toggled. Now isRaining: " << isRaining << std::endl;
 }
 
-// 切换下雪状态
-void WeatherSystem::toggleSnow() {
-    isSnowing = !isSnowing;
-    if (isSnowing) {
-        isRaining = false;  // 下雪时停止下雨
-        clear();            // 清除雨滴粒子
-    }
-    else {
-        clearSnow();        // 停止下雪时清除积雪
-    }
-    std::cout << "Snow toggled. Now isSnowing: " << isSnowing << std::endl;
+// 获取当前天气状态
+WeatherState WeatherSystem::getWeather() const{
+    return currentWeather;
 }
 
 // 清除所有粒子

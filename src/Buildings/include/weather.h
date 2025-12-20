@@ -3,6 +3,13 @@
 
 #include "headers.h"
 
+// 天气状态枚举
+enum WeatherState {
+    WEATHER_SUNNY = 0,   // 晴天
+    WEATHER_RAINING = 1, // 下雨
+    WEATHER_SNOWING = 2  // 下雪
+};
+
 // 粒子结构体
 struct WeatherParticle {
     float x, y, z;          // 位置
@@ -32,8 +39,7 @@ public:
     WeatherSystem();
     ~WeatherSystem();
 
-    bool isRaining;         // 是否正在下雨
-    bool isSnowing;         // 是否正在下雪
+    WeatherState currentWeather;
 
     // 初始化系统
     void init(int maxParticles = 5000);
@@ -47,11 +53,11 @@ public:
     // 绘制积雪效果
     void renderSnowAccumulation();
 
-    // 切换下雨状态
-    void toggleRain();
+    // 设置天气状态
+    void setWeather(WeatherState state);
 
-    // 切换下雪状态
-    void toggleSnow();
+    // 获取当前天气状态
+    WeatherState getWeather() const;
 
     // 清除所有粒子
     void clear();
