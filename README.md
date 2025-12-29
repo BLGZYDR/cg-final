@@ -26,6 +26,8 @@ git clone https://github.com/Super-Gluten/cg-final.git
 
 - 关于模型配置参数，请于都 [Model_Instruction.md](/docs/Model_Instruction.md)
 
+- 关于运行项目，可以使用 `python tools/run_project.py` 命令运行
+
 ## 🔤 Encoding Specification
 > 重要：为避免中文乱码、编译异常、协作冲突等问题，本项目**强制要求所有文件使用 UTF-8 编码格式**，禁止使用 GBK（包括 GB2312、GB18030 等衍生中文编码）。
 
@@ -61,7 +63,8 @@ git clone https://github.com/Super-Gluten/cg-final.git
 ├─test/                        
 │   └── environment.cpp        # 环境检测功能代码
 ├─tools/
-│   └── gbk_to_uft8.py         # 编码转换辅助代码
+|   ├── gbk_to_uft8.py         # 编码转换辅助代码
+│   └── run_project.py         # 自动化运行项目代码
 |
 ├── CMakeLists.txt             # CMake 项目构建配置文件
 ```

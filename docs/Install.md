@@ -61,10 +61,16 @@ add_executable(${PROJECT_NAME}
 )
 ```
 
-## 在 build 文件夹下使用 CMake 自动执行
+## 方法一：在 build 文件夹下使用 CMake 自动执行
 ```bash
 cd build
 cmake .. build
 cmake --build .
+```
+
+## 方法二：使用 tools/run_project.py 自动执行
+```bash
+cd tools
+python run_project.py
 ```
 
