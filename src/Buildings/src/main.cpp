@@ -190,7 +190,10 @@ bool initProject() {
     // 7. 初始化光照系统
     initLightSystem();
 
-    // 8. 输出版本信息
+    // 8. 设置键盘处理函数
+    glfwSetKeyCallback(window, keyCallback);
+
+    // 9. 输出版本信息
     std::cout << "OpenGL version: " << glGetString(GL_VERSION) << std::endl;
     std::cout << "GLFW version: " << glfwGetVersionString() << std::endl;
 
