@@ -103,9 +103,12 @@ add_executable(${PROJECT_NAME}
 
 # 获取 src 下所有目录头文件
 set(PROJECT_INCLUDE_DIRS
-    ${CMAKE_SOURCE_DIR}/src/Buildings/include
-    ${CMAKE_SOURCE_DIR}/src/Light_System/include
-    ${CMAKE_SOURCE_DIR}/src/Scene_Component/include
+    ${CMAKE_SOURCE_DIR}/src/Common/
+    ${CMAKE_SOURCE_DIR}/src/Core
+    ${CMAKE_SOURCE_DIR}/src/House
+    ${CMAKE_SOURCE_DIR}/src/Terrian
+    ${CMAKE_SOURCE_DIR}/src/Skybox
+    ${CMAKE_SOURCE_DIR}/src/Scene
 )
 
 # 包含目录：添加OpenGL自动识别的头文件路径

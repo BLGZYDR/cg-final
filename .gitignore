@@ -153,9 +153,6 @@ temp_assets/
 *.backup
 *.old
 *.orig
-# 核心转储文件（Linux/Mac，体积超大）
-core
-core.*
 # 压缩包/安装包
 *.tar
 *.tar.gz

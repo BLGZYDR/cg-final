@@ -46,19 +46,39 @@ git clone https://github.com/Super-Gluten/cg-final.git
 │   └── PR_WorkFlow.md         # PR和协作手册
 |
 ├─src/                         
-│   ├── Buildings/             # 建筑相关功能模块
-|   |   ├── include/
-|   |   └── src/  
-|   |
-│   ├── Light_System/          # 光照系统功能模块
-|   |   ├── include/
-|   |   └── src/  
-|   |
-│   ├── Scene_Component/       # 场景部件功能模块
-|   |   ├── include/
-|   |   └── src/  
-|   |
-│   └── main.cpp               
+│   ├── Common/                # 公共模块
+│   │   └── headers.h
+│   │
+│   ├── Core/                  # 核心功能模块（通用能力，无变化）
+│   │   ├── Geometry.h
+│   │   ├── Geometry.cpp       # 基础几何体绘制
+│   │   ├── Texture.h
+│   │   ├── Texture.cpp        # 材质系统
+│   │   ├── Lighting.h
+│   │   ├── Lighting.cpp       # 光照系统
+│   │   ├── Weather.h
+│   │   └── Weather.cpp        # 天气系统
+│   │
+│   ├── Modeling/              # 建模实体模块（新增Scene子模块）
+│   │   ├── House/             # 房子建模（无变化）
+│   │   │   ├── house.h
+│   │   │   └── house.cpp
+│   │   │
+│   │   ├── Terrain/           # 地形建模（保留原名，职责不变）
+│   │   │   ├── platform.h
+│   │   │   ├── platform.cpp
+│   │   │   ├── terrain.h
+│   │   │   └── terrain.cpp
+│   │   │
+│   │   ├── Skybox/            # 天空盒建模（无变化）
+│   │   │   ├── skybox.h
+│   │   │   └── skybox.cpp
+│   │   │
+│   │   └── Scene/             # 独立Scene模块（聚合所有下层模块）
+│   │       ├── scene.h        # 场景头文件（声明场景编排接口）
+│   │       └── scene.cpp      # 场景源文件（实现：整合house/weather/platform/terrain）
+│   │
+│   └── main.cpp               # 主程序（只需依赖Scene模块，无需直接依赖所有下层模块）
 |
 ├─test/                        
 │   └── environment.cpp        # 环境检测功能代码
